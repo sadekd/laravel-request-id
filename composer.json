@@ -1,0 +1,33 @@
+{
+    "name": "sadekd/laravel-request-id",
+    "description": "Laravel Request ID",
+    "tags": [
+        "laravel",
+        "request",
+        "id"
+    ],
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Daniel Šádek",
+            "email": "me@danielsadek.cz"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "spatie/laravel-package-tools": "^1.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "SadekD\\LaravelRequestId\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SadekD\\LaravelRequestId\\LaravelRequestIdServiceProvider"
+            ]
+        }
+    }
+}
