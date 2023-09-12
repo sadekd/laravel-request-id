@@ -1,22 +1,27 @@
-# Laravel Request ID
+# Laravel Request ID (XRID)
+
+This Laravel package to help you add [X-Request-ID](https://http.dev/x-request-id) feature into your Laravel app
+
+> The HTTP X-Request-ID request header is an optional and unofficial HTTP header, used to trace individual HTTP requests from the client to the server and back again. It allows the client and server to correlate each HTTP request.
 
 ## Installation
-
-Require this package with composer.
 
 ```bash
 composer require sadekd/laravel-request-id
 ```
 
-### Copy the package config to your local config with the publish command:
+### Config
 
 ```bash
 php artisan vendor:publish --provider="SadekD\LaravelRequestId\LaravelRequestIdServiceProvider"
 ```
 
+Configuration is commented in the [config file](config/request-id.php)
+
 ## Usage
 
-Edit `App\Http\Kernel.php` and add it into global middleware stack
+Edit `App\Http\Kernel.php` and add it as middleware into any stack or use it single
+(overall higher is better - in case of fail, you have XRID in logs, response, etc.)
 
 ```php
 protected $middleware = [

@@ -48,11 +48,8 @@ class RequestId
         return $this->config['key'];
     }
 
-    public function generate(Request $request): string
+    public function generate(): string
     {
-        return match (true) {
-                $request->is('*api*') => 'api',
-                default => 'web',
-            } . ':' . Str::{$this->config['generator']}();
+        return Str::{$this->config['generator']}();
     }
 }

@@ -20,9 +20,13 @@ class RequestId
 
     public function handle(Request $request, Closure $next)
     {
+        if (!$this->requestIdService->isEnabled()) {
+            return $next($request);
+        };
+
         $requestId = $this->requestIdService->isAcceptRequestHeadersEnabled()
-            ? $request->headers->get($this->key, $this->requestIdService->generate($request))
-            : $this->requestIdService->generate($request);
+            ? $request->headers->get($this->key, $this->requestIdService->generate())
+            : $this->requestIdService->generate();
 
         if ($this->requestIdService->isRequestHeadersEnabled()) {
             $request->headers->set($this->key, $requestId);
