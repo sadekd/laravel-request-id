@@ -27,7 +27,10 @@
         "laravel": {
             "providers": [
                 "SadekD\\LaravelRequestId\\LaravelRequestIdServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "RequestId": "SadekD\\LaravelRequestId\\Facades\\RequestId"
+            }
         }
     }
 }

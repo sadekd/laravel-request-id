@@ -24,4 +24,6 @@ return [
 
     // XRID generator
     'generator' => 'ulid',
+
+    'enable_telescope_tags' => true,
 ];
