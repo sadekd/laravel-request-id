@@ -33,8 +33,8 @@ The middleware pipeline in `RequestId::handle()`:
 5. Adds ID + hostname + URL to log context (uses `Context::add()` on Laravel 11+, `Log::withContext()` on older)
 6. Sets ID on response headers if configured (`response_headers`)
 
-ID generation delegates to `Str::{generator}()` where generator defaults to `'ulid'`.
+ID generation delegates to `SadekD\IdGenerator\IdGenerator::generate()` (from the `sadekd/id-generator` package) where generator defaults to `'ulid'`.
 
 ## Config
 
-Published config lives at `config/request-id.php`. Key options: `enabled`, `key` (header name), `accept_request_headers`, `request_headers`, `response_headers`, `log_context`, `config`, `generator` (any static `Str` method like `uuid` or `ulid`).
+Published config lives at `config/request-id.php`. Key options: `enabled`, `key` (header name), `accept_request_headers`, `request_headers`, `response_headers`, `log_context`, `config`, `generator` (`ulid` or `uuid`, via `sadekd/id-generator`).

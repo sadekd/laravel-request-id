@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Log;
+use SadekD\IdGenerator\IdGenerator;
 use SadekD\RequestId\RequestIdConfig;
-use SadekD\RequestId\RequestIdGenerator;
 use SadekD\RequestId\RequestIdValidator;
 
 class RequestId
@@ -18,7 +18,7 @@ class RequestId
 
     public function __construct(
         private readonly RequestIdConfig $config,
-        private readonly RequestIdGenerator $generator = new RequestIdGenerator(),
+        private readonly IdGenerator $generator = new IdGenerator(),
     ) {
         $this->key = $this->config->getKey();
     }

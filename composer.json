@@ -20,12 +20,17 @@
         "illuminate/http": "^12.0|^13.0",
         "illuminate/support": "^12.0|^13.0",
         "sadekd/request-id": "@dev",
+        "sadekd/id-generator": "@dev",
         "spatie/laravel-package-tools": "^1.93"
     },
     "repositories": [
         {
             "type": "path",
             "url": "../request-id"
+        },
+        {
+            "type": "path",
+            "url": "../id-generator"
         }
     ],
     "minimum-stability": "dev",
