@@ -64,7 +64,7 @@ Published to `config/request-id.php`:
 | `config` | `false` | Store the ID in Laravel config under `key`. |
 | `log_context` | `true` | Add ID + hostname + URL to log context (`Context::add` on L11+, `Log::withContext` otherwise). |
 | `response_headers` | `true` | Echo the ID on the response. |
-| `generator` | `ulid` | Any static `Str` method, e.g. `uuid` or `ulid`. |
+| `generator` | `ulid` | `ulid` or `uuid` (via `sadekd/request-id`'s `RequestIdGenerator`). |
 | `enable_telescope_tags` | `true` | Tag Telescope entries with the ID when Telescope is installed. |
 
 ## License

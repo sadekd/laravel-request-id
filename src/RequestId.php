@@ -6,7 +6,9 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
+use SadekD\RequestId\RequestIdConfig;
+use SadekD\RequestId\RequestIdGenerator;
+use SadekD\RequestId\RequestIdValidator;
 
 class RequestId
 {
@@ -16,6 +18,7 @@ class RequestId
 
     public function __construct(
         private readonly RequestIdConfig $config,
+        private readonly RequestIdGenerator $generator = new RequestIdGenerator(),
     ) {
         $this->key = $this->config->getKey();
     }
@@ -45,9 +48,7 @@ class RequestId
         if ($this->config->isAcceptRequestHeadersEnabled() && $request->headers->has($this->key)) {
             $incoming = (string) $request->headers->get($this->key);
 
-            // Only trust an inbound ID that is safe to echo into headers, logs and
-            // config: non-empty, bounded length, restricted charset (no CR/LF).
-            if ($incoming !== '' && strlen($incoming) <= 128 && preg_match('/^[A-Za-z0-9\-_.]+$/', $incoming)) {
+            if (RequestIdValidator::isValid($incoming)) {
                 $this->id = $incoming;
             }
         }
@@ -87,6 +88,6 @@ class RequestId
 
     private function generate(): string
     {
-        return Str::{$this->config->getGenerator()}();
+        return $this->generator->generate($this->config->getGenerator());
     }
 }

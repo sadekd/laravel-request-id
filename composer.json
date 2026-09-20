@@ -19,8 +19,17 @@
         "illuminate/contracts": "^12.0|^13.0",
         "illuminate/http": "^12.0|^13.0",
         "illuminate/support": "^12.0|^13.0",
+        "sadekd/request-id": "@dev",
         "spatie/laravel-package-tools": "^1.93"
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../request-id"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "SadekD\\LaravelRequestId\\": "src/"

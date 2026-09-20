@@ -3,6 +3,7 @@
 namespace SadekD\LaravelRequestId;
 
 use SadekD\LaravelRequestId\Http\Middleware\RequestId as RequestIdMiddleware;
+use SadekD\RequestId\RequestIdConfig;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
