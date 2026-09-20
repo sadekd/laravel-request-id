@@ -18,11 +18,16 @@ class RequestId
         private readonly RequestIdConfig $config,
     ) {
         $this->key = $this->config->getKey();
-        $this->id = $this->generate();
     }
 
     public function getId(): string
     {
+        // Lazily generate so callers outside the middleware pipeline (e.g. Telescope
+        // tags) always get a valid ID, even before handle() has run this request.
+        if (! isset($this->id)) {
+            $this->id = $this->generate();
+        }
+
         return $this->id;
     }
 
@@ -32,8 +37,19 @@ class RequestId
             return $next($request);
         }
 
+        // Regenerate per request. The service is a container singleton, so under
+        // Octane/Swoole the constructor runs once and would otherwise reuse one ID
+        // across every request.
+        $this->id = $this->generate();
+
         if ($this->config->isAcceptRequestHeadersEnabled() && $request->headers->has($this->key)) {
-            $this->id = $request->headers->get($this->key);
+            $incoming = (string) $request->headers->get($this->key);
+
+            // Only trust an inbound ID that is safe to echo into headers, logs and
+            // config: non-empty, bounded length, restricted charset (no CR/LF).
+            if ($incoming !== '' && strlen($incoming) <= 128 && preg_match('/^[A-Za-z0-9\-_.]+$/', $incoming)) {
+                $this->id = $incoming;
+            }
         }
 
         if ($this->config->isRequestHeadersEnabled()) {

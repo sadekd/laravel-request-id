@@ -33,16 +33,11 @@ class LaravelRequestIdServiceProvider extends PackageServiceProvider
         $this->app['router']->aliasMiddleware('request-id', RequestIdMiddleware::class);
 
         if (class_exists(\Laravel\Telescope\Telescope::class) && $this->app->make(RequestIdConfig::class)->isTelescopeTagsEnabled()) {
-            \Laravel\Telescope\Telescope::tag(function (\Laravel\Telescope\IncomingEntry $entry) {
-                return request()->hasHeader('X-Request-ID')
-                    ? ['XRID:'.request()->header('X-Request-ID')]
-                    : [];
+            $requestId = $this->app->make(RequestId::class);
+
+            \Laravel\Telescope\Telescope::tag(function (\Laravel\Telescope\IncomingEntry $entry) use ($requestId) {
+                return ['XRID:'.$requestId->getId()];
             });
         }
-    }
-
-    public function provides(): array
-    {
-        return ['request-id'];
     }
 }
