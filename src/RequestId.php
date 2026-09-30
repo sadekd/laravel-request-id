@@ -18,7 +18,7 @@ class RequestId
 
     public function __construct(
         private readonly RequestIdConfig $config,
-        private readonly IdGenerator $generator = new IdGenerator(),
+        private readonly IdGenerator $generator = new IdGenerator,
     ) {
         $this->key = $this->config->getKey();
     }

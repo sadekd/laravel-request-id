@@ -9,9 +9,7 @@ class RequestId
 {
     public function __construct(
         private readonly \SadekD\LaravelRequestId\RequestId $requestId
-    )
-    {
-    }
+    ) {}
 
     public function handle(Request $request, Closure $next): mixed
     {

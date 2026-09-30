@@ -2,6 +2,8 @@
 
 namespace SadekD\LaravelRequestId;
 
+use Laravel\Telescope\IncomingEntry;
+use Laravel\Telescope\Telescope;
 use SadekD\LaravelRequestId\Http\Middleware\RequestId as RequestIdMiddleware;
 use SadekD\RequestId\RequestIdConfig;
 use Spatie\LaravelPackageTools\Package;
@@ -33,10 +35,10 @@ class LaravelRequestIdServiceProvider extends PackageServiceProvider
     {
         $this->app['router']->aliasMiddleware('request-id', RequestIdMiddleware::class);
 
-        if (class_exists(\Laravel\Telescope\Telescope::class) && $this->app->make(RequestIdConfig::class)->isTelescopeTagsEnabled()) {
+        if (class_exists(Telescope::class) && $this->app->make(RequestIdConfig::class)->isTelescopeTagsEnabled()) {
             $requestId = $this->app->make(RequestId::class);
 
-            \Laravel\Telescope\Telescope::tag(function (\Laravel\Telescope\IncomingEntry $entry) use ($requestId) {
+            Telescope::tag(function (IncomingEntry $entry) use ($requestId) {
                 return ['XRID:'.$requestId->getId()];
             });
         }
