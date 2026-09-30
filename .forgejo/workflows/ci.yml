@@ -1,0 +1,39 @@
+# Standalone checks only: composer.json validity, PHP syntax, Laravel code style.
+# The package tests need the host app (path repositories on sibling packages and
+# no require-dev), so they run from the cms repo, not here.
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: docker
+    container:
+      image: serversideup/php:8.5-cli
+      options: --user root
+    env:
+      COMPOSER_ALLOW_SUPERUSER: '1'
+    steps:
+      # actions/checkout is a node action and the PHP image ships without node.
+      - name: Install Node and git
+        run: apt-get update && apt-get install -y --no-install-recommends nodejs git
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate composer.json
+        run: composer validate --no-check-lock
+
+      - name: PHP syntax
+        run: find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 -P4 php -l > /dev/null
+
+      - name: Code style (Pint, Laravel preset)
+        run: |
+          composer global require laravel/pint --no-interaction --no-progress
+          "$(composer global config bin-dir --absolute --quiet)/pint" --test
